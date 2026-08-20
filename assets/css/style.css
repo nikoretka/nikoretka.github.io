@@ -795,36 +795,25 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
   color: var(--ink-soft);
 }
 
-/* ---------- галерея (мозаика: крупные и обычные плитки) ---------- */
+/* ---------- галерея (кладка-masonry: колонки, натуральная высота) ---------- */
 
 .jgrid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: clamp(10px, 1.4vw, 22px);
-  grid-auto-flow: dense;
+  --jgap: clamp(10px, 1.4vw, 22px);
+  columns: 4;
+  column-gap: var(--jgap);
 }
 
 .jgrid a {
   position: relative;
+  display: block;
   overflow: hidden;
-  aspect-ratio: 3 / 4;
-}
-
-.jgrid a.t-big {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-
-.jgrid a.t-wide {
-  grid-column: span 2;
-  aspect-ratio: 3 / 2;
+  break-inside: avoid;
+  margin-bottom: var(--jgap);
 }
 
 .jgrid img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 25%;
+  height: auto;
   transition: transform 0.7s var(--ease-photo), filter 0.7s var(--ease-photo),
     opacity 0.6s ease;
 }
@@ -840,26 +829,26 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
 
 @media (min-width: 1280px) {
   .jgrid {
-    grid-template-columns: repeat(5, 1fr);
+    columns: 5;
   }
 }
 
 @media (min-width: 1680px) {
   .jgrid {
-    grid-template-columns: repeat(6, 1fr);
+    columns: 6;
   }
 }
 
 @media (max-width: 1100px) {
   .jgrid {
-    grid-template-columns: repeat(3, 1fr);
+    columns: 3;
   }
 }
 
 @media (max-width: 700px) {
   .jgrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    --jgap: 10px;
+    columns: 2;
   }
 }
 
