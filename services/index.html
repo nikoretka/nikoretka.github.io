@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/style.css?v=3">
 </head>
 <body>
 <header class="site-header -over-dark">
@@ -116,20 +116,28 @@
 </div>
 </section>
 
-<section class="section">
+<section class="quote-band" style="padding-block: clamp(5rem, 13vw, 8.5rem)">
+<div class="band-media" data-parallax="0.12">
+<img src="/assets/img/services-book-bg.webp" alt="" loading="lazy" width="960" height="1280">
+</div>
+<div class="container">
+<h2 class="display-2" data-reveal>Забронируйте съёмку</h2>
+<p data-reveal style="--i:1; max-width:54ch; margin:0 auto 2.2em">Если у вас есть идея или просто хотите красивые фото — напишите мне. Обсудим, чего вы хотите, выберем локацию или студию, подберём удобное время. Я отвечу на все вопросы.</p>
+<p data-reveal style="--i:2"><a class="btn -light" href="/contacts/">Заказать</a></p>
+</div>
+</section>
+
+<section class="section" style="padding-top: var(--section-pad)">
 <div class="container">
 <div class="split">
 <div class="col-media" style="grid-column: span 5">
 <figure style="margin:0; overflow:hidden" data-reveal>
-<img src="/assets/img/services-book.webp" alt="Забронируйте съёмку" width="960" height="960" loading="lazy">
+<img src="/assets/img/services-book.webp" alt="Как проходит съёмка" width="960" height="960" loading="lazy">
 </figure>
 </div>
 <div class="col-text" style="grid-column: span 7">
-<h2 class="display-2" data-reveal>Забронируйте съёмку</h2>
-<p data-reveal style="--i:1; max-width:54ch">Если у вас есть идея или просто хотите красивые фото — напишите мне. Обсудим, чего вы хотите, выберем локацию или студию, подберём удобное время. Я отвечу на все вопросы.</p>
-<p data-reveal style="--i:2; margin-top:2rem"><a class="btn" href="/contacts/">Заказать</a></p>
-<h2 class="display-3" data-reveal style="margin-top:3rem">Как проходит съёмка</h2>
-<div class="steps" data-reveal style="--i:3; grid-template-columns:1fr; gap:1.5rem">
+<h2 class="display-2" data-reveal>Как проходит съёмка</h2>
+<div class="steps" data-reveal style="--i:1; grid-template-columns:1fr; gap:1.5rem">
 <article class="step">
 <h3>Договорились</h3>
 <p>Вы пишете мне. Рассказываете, что хотите. Я предлагаю локации, помогаю с идеями и образами. Договариваемся о времени и месте.</p>
@@ -143,15 +151,10 @@
 <p>Через 3–14 дней я отправляю все удачные кадры в цветокоррекции (от 50 шт за час). Вы выбираете 20 лучших за каждый час съёмки — я делаю лёгкую ретушь. Короткое видео — в подарок.</p>
 </article>
 </div>
+<h3 data-reveal style="margin-top:2.5rem">Материалы</h3>
+<p data-reveal style="--i:1">Готовые фотографии передаются в онлайн-галерее в удобном формате для дальнейшего использования, хранятся 3 месяца. Фото сохраняете себе. Делитесь с друзьями. Печатаете, если хотите в фотоальбом. Я всегда на связи, если нужна будет помощь.</p>
 </div>
 </div>
-</div>
-</section>
-
-<section class="cta-band">
-<div class="container">
-<p class="eyebrow" data-reveal>Материалы</p>
-<p data-reveal style="--i:1; max-width:60ch; margin-inline:auto">Готовые фотографии передаются в онлайн-галерее в удобном формате для дальнейшего использования, хранятся 3 месяца. Фото сохраняете себе. Делитесь с друзьями. Печатаете, если хотите в фотоальбом. Я всегда на связи, если нужна будет помощь.</p>
 </div>
 </section>
 
@@ -189,7 +192,7 @@
 <p class="footer-copy">Вероника Поповская, фотограф в Краснодаре. Все права защищены.</p>
 </div>
 </footer>
-<script src="/assets/js/main.js" defer></script>
+<script src="/assets/js/main.js?v=3" defer></script>
 
 </body>
 </html>

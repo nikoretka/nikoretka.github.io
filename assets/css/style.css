@@ -152,6 +152,12 @@ h4 {
   margin-inline: auto;
 }
 
+/* широкий контейнер для сетки галереи — почти во весь экран */
+.container-wide {
+  width: calc(100% - 2 * clamp(12px, 2vw, 36px));
+  margin-inline: auto;
+}
+
 .section {
   padding-block: var(--section-pad);
 }
@@ -337,6 +343,31 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
 .btn:hover {
   background: var(--ink);
   color: var(--paper);
+}
+
+.btn.-light {
+  color: var(--white);
+  border-color: var(--white);
+}
+
+.btn.-light:hover {
+  background: var(--white);
+  color: var(--ink);
+}
+
+.btn.-stack {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7em;
+  width: min(100%, 420px);
+  margin-inline: auto;
+}
+
+.btn.-stack svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
 }
 
 .btn.-solid {
@@ -638,7 +669,7 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
   z-index: 2;
 }
 
-.quote-band h2 {
+.quote-band h2:not([class]) {
   font-size: clamp(1.05rem, 1.6vw, 1.25rem);
   font-family: var(--font-body);
   font-weight: 500;
@@ -805,6 +836,18 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
 .jgrid a:hover img {
   transform: scale(1.035);
   filter: brightness(0.94);
+}
+
+@media (min-width: 1280px) {
+  .jgrid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+@media (min-width: 1680px) {
+  .jgrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
 }
 
 @media (max-width: 1100px) {
@@ -978,7 +1021,7 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
 
 .tariff img {
   width: 100%;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   transition: transform 0.8s var(--ease-photo);
 }
@@ -1048,7 +1091,15 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
 
 .terms {
   counter-reset: term;
-  max-width: 760px;
+}
+
+@media (min-width: 1024px) {
+  .terms {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: start;
+  }
 }
 
 .term {
@@ -1078,31 +1129,30 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
   color: var(--ink-soft);
 }
 
-/* ---------- отзыв ---------- */
+/* ---------- отзыв (как в оригинале: аватар + текст по центру) ---------- */
 
-.review-card {
-  background: var(--white);
-  border: 1px solid var(--line);
-  padding: clamp(1.75rem, 4vw, 3rem);
+.review {
+  max-width: 560px;
+  margin-inline: auto;
+  text-align: center;
 }
 
-.review-card h2 {
-  font-size: 1.7rem;
-  margin-bottom: 0.5em;
+.review .review-avatar {
+  width: clamp(150px, 20vw, 190px);
+  height: clamp(150px, 20vw, 190px);
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: 45% 40%;
+  margin: 0 auto 1.6rem;
 }
 
-.review-card p {
+.review h2 {
+  font-size: 1.9rem;
+  margin-bottom: 0.6em;
+}
+
+.review p {
   color: var(--ink-soft);
-  margin: 0;
-}
-
-.review-card .review-quote {
-  font-family: var(--font-display);
-  font-size: 3.2rem;
-  line-height: 0;
-  color: var(--accent);
-  display: block;
-  margin: 0.4em 0 0.55em;
 }
 
 /* ---------- список доп. услуг ---------- */
@@ -1135,15 +1185,27 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
 
 .contact-links {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.9rem;
-  margin-top: 1.8rem;
+  margin-top: 2rem;
+}
+
+.contact-block {
+  max-width: 680px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.contact-block h1,
+.contact-block p {
+  margin-inline: auto;
 }
 
 .collage {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--gap);
+  align-items: start;
 }
 
 .collage figure {
@@ -1151,10 +1213,9 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
   overflow: hidden;
 }
 
+/* фото в натуральных пропорциях, как на оригинале */
 .collage img {
   width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
   transition: transform 0.8s var(--ease-photo);
 }
 
@@ -1350,18 +1411,6 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
     grid-template-columns: 1fr;
   }
 
-  .collage {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .collage figure:nth-child(3) {
-    grid-column: 1 / -1;
-  }
-
-  .collage figure:nth-child(3) img {
-    aspect-ratio: 16 / 10;
-  }
-
   .info-grid article:nth-child(odd) {
     border-right: 0;
   }
@@ -1394,10 +1443,5 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
 
   .collage figure:nth-child(2) {
     margin-top: 0;
-  }
-
-  .collage img,
-  .collage figure:nth-child(3) img {
-    aspect-ratio: 4 / 5;
   }
 }
