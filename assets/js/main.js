@@ -4,13 +4,28 @@
 
   var reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* страховка: если переход между страницами завис — принудительно завершить */
+  addEventListener("pagereveal", function (e) {
+    if (e.viewTransition) {
+      setTimeout(function () {
+        try {
+          e.viewTransition.skipTransition();
+        } catch (err) {
+          /* уже завершён */
+        }
+      }, 900);
+    }
+  });
+
   /* --- шапка: фон после прокрутки --- */
   var header = document.querySelector(".site-header");
-  function onScrollHeader() {
-    header.classList.toggle("-scrolled", scrollY > 40);
+  if (header) {
+    var onScrollHeader = function () {
+      header.classList.toggle("-scrolled", scrollY > 40);
+    };
+    addEventListener("scroll", onScrollHeader, { passive: true });
+    onScrollHeader();
   }
-  addEventListener("scroll", onScrollHeader, { passive: true });
-  onScrollHeader();
 
   /* --- мобильное меню --- */
   var burger = document.querySelector(".burger");
@@ -42,7 +57,7 @@
           }
         });
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
+      { rootMargin: "0px 0px -8% 0px", threshold: 0 }
     );
     revealEls.forEach(function (el) {
       io.observe(el);
@@ -79,19 +94,100 @@
     update();
   }
 
+  /* --- стрелка вниз в хиро --- */
+  var scrollDown = document.querySelector(".scroll-down");
+  if (scrollDown) {
+    scrollDown.addEventListener("click", function () {
+      var heroEl = document.querySelector(".hero");
+      var next = heroEl && heroEl.nextElementSibling;
+      (next || document.body).scrollIntoView({
+        behavior: reduceMotion ? "auto" : "smooth",
+        block: "start",
+      });
+    });
+  }
+
+  /* --- аккордеон (FAQ, доп. услуги) с плавным раскрытием --- */
+  document.querySelectorAll(".faq details").forEach(function (d) {
+    var summary = d.querySelector("summary");
+    var body = d.querySelector(".faq-body");
+    if (!summary || !body) return;
+    summary.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (reduceMotion || !body.animate) {
+        d.open = !d.open;
+        return;
+      }
+      if (d.dataset.animating) return;
+      d.dataset.animating = "1";
+      body.style.overflow = "hidden";
+      var done = function () {
+        body.style.overflow = "";
+        delete d.dataset.animating;
+        d.classList.remove("closing");
+      };
+      if (d.open) {
+        d.classList.add("closing");
+        var h = body.offsetHeight;
+        var closeAnim = body.animate(
+          [
+            { height: h + "px", paddingBottom: "1.7rem", opacity: 1 },
+            { height: "0px", paddingBottom: "0rem", opacity: 0 },
+          ],
+          { duration: 300, easing: "cubic-bezier(.4,0,.22,1)" }
+        );
+        closeAnim.onfinish = function () {
+          d.open = false;
+          done();
+        };
+      } else {
+        d.open = true;
+        var h2 = body.offsetHeight;
+        var openAnim = body.animate(
+          [
+            { height: "0px", paddingBottom: "0rem", opacity: 0 },
+            { height: h2 + "px", paddingBottom: "1.7rem", opacity: 1 },
+          ],
+          { duration: 380, easing: "cubic-bezier(.16,1,.3,1)" }
+        );
+        openAnim.onfinish = done;
+      }
+    });
+  });
+
+  /* --- плавное появление фото галереи по мере загрузки --- */
+  document.querySelectorAll(".jgrid img").forEach(function (im) {
+    if (im.complete) return;
+    im.classList.add("pending");
+    var show = function () {
+      im.classList.remove("pending");
+    };
+    im.addEventListener("load", show, { once: true });
+    im.addEventListener("error", show, { once: true });
+  });
+
   /* --- видео-хиро: убрать постер после старта --- */
   var hero = document.querySelector(".hero");
   var video = hero && hero.querySelector("video");
   if (video) {
     if (reduceMotion) {
+      /* показываем постер и не качаем видео */
       video.removeAttribute("autoplay");
+      video.addEventListener("playing", function () {
+        video.pause();
+      });
       video.pause();
+      var src = video.querySelector("source");
+      if (src) {
+        src.remove();
+        video.load();
+      }
     } else {
       video.addEventListener("playing", function () {
         hero.classList.add("-playing");
       });
       /* если autoplay уже случился до подписки */
-      if (!video.paused && video.currentTime > 0) {
+      if (!video.paused) {
         hero.classList.add("-playing");
       }
     }

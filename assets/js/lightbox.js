@@ -27,6 +27,7 @@
   dlg.addEventListener("dragstart", function (e) {
     e.preventDefault();
   });
+  var opener = null;
   var counter = dlg.querySelector(".lb-counter");
   var stage = dlg.querySelector(".lb-stage");
   var current = 0;
@@ -40,6 +41,7 @@
   }
 
   function render(i, instant) {
+    if (dlg.classList.contains("-closing")) return;
     current = (i + links.length) % links.length;
     var link = links[current];
     var show = function () {
@@ -59,8 +61,8 @@
   }
 
   function open(i) {
-    render(i, true);
     dlg.classList.remove("-closing");
+    render(i, true);
     if (!dlg.open) dlg.showModal();
     document.body.style.overflow = "hidden";
   }
@@ -70,13 +72,24 @@
     setTimeout(function () {
       dlg.close();
       dlg.classList.remove("-closing");
-      document.body.style.overflow = "";
     }, 300);
   }
+
+  /* очистка на любом пути закрытия (Esc, CloseWatcher, кнопка) */
+  dlg.addEventListener("close", function () {
+    document.body.style.overflow = "";
+    clearTimeout(swapTimer);
+    dlg.classList.remove("-swap");
+    if (opener) {
+      opener.focus();
+      opener = null;
+    }
+  });
 
   links.forEach(function (link, i) {
     link.addEventListener("click", function (e) {
       e.preventDefault();
+      opener = link;
       open(i);
     });
   });
@@ -95,8 +108,12 @@
     close();
   });
 
-  /* клик по фону закрывает, по фото — нет */
+  /* клик по фону закрывает, по фото — нет; свайп кликом не считается */
   dlg.addEventListener("click", function (e) {
+    if (gesture) {
+      gesture = false;
+      return;
+    }
     if (e.target === dlg || e.target === stage || e.target.classList.contains("lb-scrim")) {
       close();
     }
@@ -113,12 +130,21 @@
   var startY = 0;
   var startT = 0;
   var tracking = false;
+  var gesture = false;
 
   stage.addEventListener("pointerdown", function (e) {
     tracking = true;
+    gesture = false;
     startX = e.clientX;
     startY = e.clientY;
     startT = Date.now();
+    if (stage.setPointerCapture) {
+      try {
+        stage.setPointerCapture(e.pointerId);
+      } catch (err) {
+        /* pointerId уже недействителен */
+      }
+    }
   });
 
   stage.addEventListener("pointerup", function (e) {
@@ -129,8 +155,10 @@
     var dt = Math.max(Date.now() - startT, 1);
     var vx = Math.abs(dx) / dt;
     if (Math.abs(dy) > 90 && Math.abs(dy) > Math.abs(dx) * 1.5) {
+      gesture = true;
       close();
     } else if (Math.abs(dx) > 48 || vx > 0.35) {
+      gesture = true;
       render(current + (dx < 0 ? 1 : -1));
     }
   });
