@@ -634,6 +634,15 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
   color: var(--accent);
 }
 
+/* ---------- портрет «О себе»: вертикальный кадр из квадратного исходника ---------- */
+
+.about-photo img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: 50% 20%;
+}
+
 /* ---------- параллакс-квота ---------- */
 
 .quote-band {
@@ -1166,13 +1175,16 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
   display: flex;
   align-items: center;
   gap: clamp(2rem, 5vw, 4.5rem);
-  max-width: 920px;
+  max-width: 1000px;
   text-align: left;
 }
 
 .review.-side .review-avatar {
   margin: 0;
   flex-shrink: 0;
+  width: clamp(280px, 32vw, 420px);
+  height: auto;
+  border-radius: 0;
 }
 
 @media (max-width: 700px) {
@@ -1182,6 +1194,7 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
   }
 
   .review.-side .review-avatar {
+    width: 100%;
     margin-bottom: 0.5rem;
   }
 }
