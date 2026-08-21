@@ -152,12 +152,6 @@ h4 {
   margin-inline: auto;
 }
 
-/* широкий контейнер для сетки галереи — почти во весь экран */
-.container-wide {
-  width: calc(100% - 2 * clamp(12px, 2vw, 36px));
-  margin-inline: auto;
-}
-
 .section {
   padding-block: var(--section-pad);
 }
