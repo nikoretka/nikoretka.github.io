@@ -858,18 +858,6 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
   filter: brightness(0.94);
 }
 
-@media (min-width: 1280px) {
-  .jgrid {
-    --jcols: 5;
-  }
-}
-
-@media (min-width: 1680px) {
-  .jgrid {
-    --jcols: 6;
-  }
-}
-
 @media (max-width: 1100px) {
   .jgrid {
     --jcols: 3;
