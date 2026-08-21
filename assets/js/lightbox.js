@@ -7,6 +7,11 @@
   );
   if (!links.length) return;
 
+  /* main.js переставляет кадры по колонкам — возвращаем порядок съёмки */
+  links.sort(function (a, b) {
+    return (a.dataset.i | 0) - (b.dataset.i | 0);
+  });
+
   var dlg = document.createElement("dialog");
   dlg.className = "lightbox";
   dlg.setAttribute("aria-label", "Просмотр фотографии");

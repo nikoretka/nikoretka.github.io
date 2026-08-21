@@ -155,6 +155,42 @@
     });
   });
 
+  /* --- кладка: раскидываем кадры по колонкам слева направо --- */
+  var jgrid = document.querySelector(".jgrid");
+  if (jgrid) {
+    var tiles = [].slice.call(jgrid.children);
+    tiles.forEach(function (a, i) {
+      a.dataset.i = i;
+    });
+    var jcols = 0;
+    var relayout = function () {
+      var n = parseInt(getComputedStyle(jgrid).getPropertyValue("--jcols"), 10);
+      if (!n || n === jcols) return;
+      jcols = n;
+      var cols = [];
+      var fill = [];
+      for (var i = 0; i < n; i++) {
+        var col = document.createElement("div");
+        col.className = "jgrid-col";
+        cols.push(col);
+        fill.push(0);
+      }
+      tiles.forEach(function (a) {
+        var im = a.querySelector("img");
+        /* высота в долях ширины колонки: width/height проставлены у всех кадров */
+        var ratio =
+          (+im.getAttribute("height") || 3) / (+im.getAttribute("width") || 2);
+        var k = fill.indexOf(Math.min.apply(null, fill));
+        cols[k].appendChild(a);
+        fill[k] += ratio;
+      });
+      jgrid.replaceChildren.apply(jgrid, cols);
+      jgrid.classList.add("-flow");
+    };
+    relayout();
+    addEventListener("resize", relayout);
+  }
+
   /* --- плавное появление фото галереи по мере загрузки --- */
   document.querySelectorAll(".jgrid img").forEach(function (im) {
     if (im.complete) return;

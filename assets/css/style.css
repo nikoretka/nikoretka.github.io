@@ -808,8 +808,26 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
 
 .jgrid {
   --jgap: clamp(10px, 1.4vw, 22px);
-  columns: 4;
+  --jcols: 4;
+  columns: var(--jcols);
   column-gap: var(--jgap);
+}
+
+/* колонки собирает main.js: чистый CSS-multicol заполняет первую колонку
+   сверху донизу, и 311 кадров выстраиваются в одну ленту */
+.jgrid.-flow {
+  columns: auto;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--jgap);
+}
+
+.jgrid-col {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  gap: var(--jgap);
+  min-width: 0;
 }
 
 .jgrid a {
@@ -818,6 +836,10 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
   overflow: hidden;
   break-inside: avoid;
   margin-bottom: var(--jgap);
+}
+
+.jgrid.-flow a {
+  margin-bottom: 0;
 }
 
 .jgrid img {
@@ -838,26 +860,26 @@ body.menu-open .site-header.-over-dark:not(.-scrolled) {
 
 @media (min-width: 1280px) {
   .jgrid {
-    columns: 5;
+    --jcols: 5;
   }
 }
 
 @media (min-width: 1680px) {
   .jgrid {
-    columns: 6;
+    --jcols: 6;
   }
 }
 
 @media (max-width: 1100px) {
   .jgrid {
-    columns: 3;
+    --jcols: 3;
   }
 }
 
 @media (max-width: 700px) {
   .jgrid {
     --jgap: 10px;
-    columns: 2;
+    --jcols: 2;
   }
 }
 
